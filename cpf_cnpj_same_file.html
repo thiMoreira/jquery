@@ -1,0 +1,48 @@
+<script language="javascript" type="text/javascript">
+    function mask(string)
+    {
+        if (string.value.length > 14) 
+
+            string.value = cnpj(string.value);
+        else                      
+
+            string.value = cpf(string.value);
+    }
+ 
+    function formatMask(obj, fun)
+    {
+        fmObj = obj
+        fmFun = fun
+        setTimeout('execmascara()', 1)
+    }
+
+
+    function execmascara() 
+    {
+        fmObj.value = fmFun(fmObj.value)
+    }
+
+    function cpfCnpj(value) 
+    {
+        value = value.replace(/\D/g, "")
+
+        if (value.length <= 14)
+        { 
+            value = value.replace(/(\d{3})(\d)/, "$1.$2")
+            value = value.replace(/(\d{3})(\d)/, "$1.$2")
+            value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+
+        }else{ 
+
+            value = value.replace(/^(\d{2})(\d)/, "$1.$2")
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+            value = value.replace(/\.(\d{3})(\d)/, ".$1/$2")
+            value = value.replace(/(\d{4})(\d)/, "$1-$2")
+        }
+
+        return value
+    }
+
+</script>
+
+<input type="text" maxlength="18" onkeypress="formatMask(this,cpfCnpj)"> 
